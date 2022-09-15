@@ -150,7 +150,7 @@ int main(int argc, char* argv[])
             printf("%lld\n", num_copy);
             return 0;
         } else{
-            printf("Wrong argumebts!\n");
+            printf("Wrong arguments!\n");
             return 0;
         }
     }
