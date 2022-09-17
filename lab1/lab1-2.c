@@ -173,7 +173,7 @@ int main(int argc, char* argv[])
             return 0;
         } else{
             double a = 0, b = 0, c = 0;
-            double eps = 0.001;
+            double eps = 0.0001;
             if(symbol_in_double(argv[2]) || symbol_in_double(argv[3]) || symbol_in_double(argv[4])){
                 printf("You must enter only numbers with flag '-q'!\n");
                 return 0;
