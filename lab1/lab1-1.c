@@ -133,7 +133,7 @@ int main(int argc, char* argv[])
                 printf("Enter number more than 0!\n");
                 return 0;
             } else{
-                int res = 0; //формулу вместо цикла
+                int res = 0;
                 res = (num * (num + 1)) / 2;
                 printf("%d\n", res);
                 return 0;
