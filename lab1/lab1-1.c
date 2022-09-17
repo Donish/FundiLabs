@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
     } else{
 
     
-        for(int i = 0; i < strlen(argv[2]); i++){ //проверка того, что число стоит на первом месте, а затем аргумент
+        for(int i = 0; argv[2][i] != '\0'; i++){ //проверка того, что число стоит на первом месте, а затем аргумент
             if((argv[2][i] > 47 && argv[2][i] < 58) && ((argv[1][0] == 45 || argv[1][0] == 47) && (argv[1][1] == 97 || argv[1][1] == 101 ||
             argv[1][1] == 102 || argv[1][1] == 104 || argv[1][1] == 112 || argv[1][1] == 115))){  
                 printf("The number must be the first, then the flag!\n");
@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
             printf("Your number must be positive!\n"); //проверка на знак
             return 0;
         } else {
-            for(int i = 0; i < strlen(argv[1]); i++){ //проверка на наличие символа в числе
+            for(int i = 0; argv[1][i] != '\0'; i++){ //проверка на наличие символа в числе
                 if(argv[1][i] < 48 || argv[1][i] > 57){
                     printf("There is a symbol in your number!\n");
                     return 0;
@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
             }
         }
 
-        for(int i = 0; i < strlen(argv[1]); i++){ //перевод из строки в инт
+        for(int i = 0; argv[1][i] != '\0'; i++){ //перевод из строки в инт
             num += argv[1][i] - 48;
             num *= 10;
         }
@@ -92,7 +92,7 @@ int main(int argc, char* argv[])
                 printf("Enter the number other than one or zero!\n");
                 return 0;
             } else{
-                for(int i = 2; i < num; i++){
+                for(int i = 2; i < floor(sqrt(num)); i++){
                     if(num % i == 0){
                         printf("Your number is composite!\n");
                         return 0;
@@ -102,7 +102,7 @@ int main(int argc, char* argv[])
                 return 0;
             }
         } else if(strcmp(argv[2], "-s") == 0 || strcmp(argv[2], "/s") == 0){  //аргумент -s
-            for(int i = 0; i < strlen(argv[1]); i++){
+            for(int i = 0; argv[1][i] != '\0'; i++){
                 printf("%c ", argv[1][i]);
             }
         } else if(strcmp(argv[2], "-e") == 0 || strcmp(argv[2], "/e") == 0){   //аргумент -e
@@ -133,10 +133,8 @@ int main(int argc, char* argv[])
                 printf("Enter number more than 0!\n");
                 return 0;
             } else{
-                int res = 0;
-                for(int i = 1; i <= num; i++){
-                    res += i;
-                }
+                int res = 0; //формулу вместо цикла
+                res = (num * (num + 1)) / 2;
                 printf("%d\n", res);
                 return 0;
             }
@@ -150,7 +148,7 @@ int main(int argc, char* argv[])
             printf("%lld\n", num_copy);
             return 0;
         } else{
-            printf("Wrong arguments!\n");
+            printf("Wrong argumebts!\n");
             return 0;
         }
     }
