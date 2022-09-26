@@ -7,7 +7,7 @@ int foopower(int number, int power)
 {
     int res = 1;
     if (power > 0){   
-        res=number*foopower(number, power-1);
+        res = number * foopower(number, power-1);
     }
     return res;
 }
@@ -17,6 +17,9 @@ int base_isalnum(char* number)
 {
     int res = 11;
     for(int i = 0; number[i] != '\0'; i++){
+        if(number[i] == '-' && i == 0){
+            continue;
+        }
         if(res < tolower(number[i])){
             res = tolower(number[i]);
         }
@@ -30,6 +33,9 @@ int base_isdigit(char* number)
 {
     int res = 1;
     for(int i = 0; number[i] != '\0'; i++){
+        if(number[i] == '-' && i == 0){
+            continue;
+        }
         if(res < number[i]){
             res = number[i];
         }
@@ -42,6 +48,9 @@ int base_isdigit(char* number)
 int other_syms(char* number)
 {
     for(int i = 0; number[i] != '\0'; i++){
+        if(number[i] == '-' && i == 0){
+            continue;
+        }
         if(!isalnum(number[i]) && number[i] != '\n' && number[i] != '\t' && number[i] != ' '){
             return 1;
         }
@@ -53,6 +62,9 @@ int other_syms(char* number)
 int isletter_in(char* number)
 {
     for(int i = 0; number[i] != '\0'; i++){
+        if(number[i] == '-' && i == 0){
+            continue;
+        }
         if(isalpha(number[i])){
             return 1;
         }
@@ -64,6 +76,9 @@ int isletter_in(char* number)
 int isonly_digits(char* number)
 {
     for(int i = 0; number[i] != '\0'; i++){
+        if(number[i] == '-', i == 0){
+            continue;
+        }
         if(!isdigit(number[i])){
             return 0;
         }
@@ -77,7 +92,14 @@ long long int convert_letters(char* number, int base)
     long long int res = 0;
     int size = strlen(number);
     int power = 0;
+    int sign = 1;
+    if(number[0] == '-'){
+        sign = -1;
+    }
     for(int i = size - 1, j = 0; i != -1; i--, j++){
+        if(number[i] == '-' && i == 0){
+            break;
+        }
         if(isdigit(number[i])){
             res += (number[i] - '0') * foopower(base, j);
         }
@@ -85,7 +107,7 @@ long long int convert_letters(char* number, int base)
             res += (tolower(number[i]) - 'a' + 10) * foopower(base, j);
         }
     }
-    return res;
+    return sign * res;
 }
 
 // функция для перевода числа в 10-ную из численной
@@ -94,10 +116,17 @@ long long int convert_digits(char* number, int base)
     long long int res = 0;
     int size = strlen(number);
     int power = 0;
+    int sign = 1;
+    if(number[0] == '-'){
+        sign = -1;
+    }
     for(int i = size - 1, j = 0; i != -1; i--, j++){
+        if(number[i] == '-' && i == 0){
+            break;
+        }
         res += (number[i] - '0') * foopower(base, j);
     }
-    return res;
+    return sign * res;
 }
 
 //проверка числа на единственный ноль
