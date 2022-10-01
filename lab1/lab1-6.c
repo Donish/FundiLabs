@@ -3,15 +3,6 @@
 #include <string.h>
 #include <ctype.h>
 
-int foopower(int number, int power)
-{
-    int res = 1;
-    if (power > 0){   
-        res = number * foopower(number, power-1);
-    }
-    return res;
-}
-
 // функция по вычислению основания числа, в котором есть буква
 int base_isalnum(char* number)
 {
@@ -76,7 +67,7 @@ int isletter_in(char* number)
 int isonly_digits(char* number)
 {
     for(int i = 0; number[i] != '\0'; i++){
-        if(number[i] == '-', i == 0){
+        if(number[i] == '-' && i == 0){
             continue;
         }
         if(!isdigit(number[i])){
@@ -91,21 +82,22 @@ long long int convert_letters(char* number, int base)
 {
     long long int res = 0;
     int size = strlen(number);
-    int power = 0;
+    int power = 1;
     int sign = 1;
     if(number[0] == '-'){
         sign = -1;
     }
-    for(int i = size - 1, j = 0; i != -1; i--, j++){
+    for(int i = size - 1; i != -1; i--){
         if(number[i] == '-' && i == 0){
             break;
         }
         if(isdigit(number[i])){
-            res += (number[i] - '0') * foopower(base, j);
+            res += (number[i] - '0') * power;
         }
         if(isalpha(number[i])){
-            res += (tolower(number[i]) - 'a' + 10) * foopower(base, j);
+            res += (tolower(number[i]) - 'a' + 10) * power;
         }
+        power *= base;
     }
     return sign * res;
 }
@@ -115,16 +107,17 @@ long long int convert_digits(char* number, int base)
 {
     long long int res = 0;
     int size = strlen(number);
-    int power = 0;
+    int power = 1;
     int sign = 1;
     if(number[0] == '-'){
         sign = -1;
     }
-    for(int i = size - 1, j = 0; i != -1; i--, j++){
+    for(int i = size - 1; i != -1; i--){
         if(number[i] == '-' && i == 0){
             break;
         }
-        res += (number[i] - '0') * foopower(base, j);
+        res += (number[i] - '0') * power;
+        power *= base;
     }
     return sign * res;
 }
