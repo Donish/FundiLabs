@@ -82,7 +82,7 @@ long long int convert_letters(char* number, int base)
 {
     long long int res = 0;
     int size = strlen(number);
-    int power = 1;
+    long long int power = 1;
     int sign = 1;
     if(number[0] == '-'){
         sign = -1;
@@ -107,7 +107,7 @@ long long int convert_digits(char* number, int base)
 {
     long long int res = 0;
     int size = strlen(number);
-    int power = 1;
+    long long int power = 1;
     int sign = 1;
     if(number[0] == '-'){
         sign = -1;
