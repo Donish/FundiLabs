@@ -22,7 +22,7 @@ int *generate_array(int size)
         return NULL;
     }
     for(int i = 0; i < size; i++){
-        array[i] = rand();
+        array[i] = rand() % 1000;
     }
     return array;
 }
@@ -53,7 +53,7 @@ int main()
     printf("Enter arrays sizes:\n");
     int size1, size2;
     scanf("%d%d", &size1, &size2);
-    
+
     int *arr1 = generate_array(size1);
     if(arr1 == NULL){
         printf("Memory wasn't allocated!\n");
