@@ -22,15 +22,6 @@ int check_base_num(char* number, int base)
     return 0;
 }
 
-int foopower(int number, int power)
-{
-    int res = 1;
-    if (power > 0){   
-        res=number*foopower(number, power-1);
-    }
-    return res;
-}
-
 long long int strtoint(char* number)
 {
     long long int res = 0;
@@ -79,7 +70,7 @@ long long int convert_letters_to_ten(char* number, int base)
 {
     long long int res = 0;
     int size = strlen(number);
-    int power = 0;
+    long long int power = 1;
     int sign = 1;
     if(number[0] == '-'){
         sign = -1;
@@ -89,11 +80,12 @@ long long int convert_letters_to_ten(char* number, int base)
             break;
         }
         if(isdigit(number[i])){
-            res += (number[i] - '0') * foopower(base, j);
+            res += (number[i] - '0') * power;
         }
         if(isalpha(number[i])){
-            res += (tolower(number[i]) - 'a' + 10) * foopower(base, j);
+            res += (tolower(number[i]) - 'a' + 10) * power;
         }
+        power *= base;
     }
     return res * sign;
 }
@@ -103,7 +95,7 @@ long long int convert_digits_to_ten(char* number, int base)
 {
     long long int res = 0;
     int size = strlen(number);
-    int power = 0;
+    long long int power = 1;
     int sign = 1;
     if(number[0] == '-'){
         sign = -1;
@@ -112,24 +104,19 @@ long long int convert_digits_to_ten(char* number, int base)
         if(number[i] == '-' && i == 0){
             break;
         }
-        res += (number[i] - '0') * foopower(base, j);
+        res += (number[i] - '0') * power;
+        power *= base;
     }
     return res * sign;
 }
 
 void convert_from_ten(long long int number, int base)
 {
-    char res[50];
-    for(int i = 0; i < 50; i++){
-        res[i] = '\0';
-    }
-    int ost_arr[50];
+    char res[100];
+    int ost_arr[100];
     int size = 0;
     int ostatok;
     int sign = 1;
-    if(number == 0){
-        res[0] = '0';
-    }
     if(number < 0){
         number *= -1;
         sign = -1;
@@ -140,9 +127,15 @@ void convert_from_ten(long long int number, int base)
         ost_arr[size] = ostatok;
         size++;
     }
+    res[size] = '\0';
+    if(number == 0){
+        res[0] = '0';
+        res[1] = '\0';
+    }
     for(int i = size - 1, j = 0; i != -1; i--, j++){
         if(sign == -1 && j == 0){
             res[j] = '-';
+            res[size + 1] = '\0';
             j++;
         }
         if(ost_arr[i] < 10){
