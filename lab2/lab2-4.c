@@ -41,7 +41,7 @@ int main()
     int degree;
     double num, powered;
 
-    double avg = geom_avg(3, 5.0, 7.0, 9.0);
+    double avg = geom_avg(3, (double)5, (double)7, (double)9);
     if(avg == EPS){
         printf("Wrong numbers!\n");
         return 0;
