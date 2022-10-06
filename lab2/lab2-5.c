@@ -95,6 +95,10 @@ int main(int argc, char *argv[])
     int *arr, size, range1, range2;
     printf("Enter the size of your array:\n");
     scanf("%d", &size);
+    if(size < 0){
+        printf("Only positive number!\n");
+        return 0;
+    }
     printf("Enter the range:\n");
     scanf("%d%d", &range1, &range2);
 
