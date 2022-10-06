@@ -53,6 +53,10 @@ int main()
     printf("Enter arrays sizes:\n");
     int size1, size2;
     scanf("%d%d", &size1, &size2);
+    if(size1 < 0 || size2 < 0){
+        printf("Only positive numbers!\n");
+        return 0;
+    }
 
     int *arr1 = generate_array(size1);
     if(arr1 == NULL){
