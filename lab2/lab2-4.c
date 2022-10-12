@@ -4,8 +4,6 @@
 #include <math.h>
 #include <stdarg.h>
 
-#define EPS 0.00000001
-
 double geom_avg(int size, ...)
 {
     double res = 1;
@@ -16,8 +14,8 @@ double geom_avg(int size, ...)
         res *= va_arg(runner, double);
     }
 
-    if(res < 0){
-        return EPS;
+    if(res < 0 && (size % 2 == 0)){
+        return NAN;
     }
 
     va_end(runner);
@@ -42,7 +40,7 @@ int main()
     double num, powered;
 
     double avg = geom_avg(3, (double)5, (double)7, (double)9);
-    if(avg == EPS){
+    if(isnan(avg)){
         printf("Wrong numbers!\n");
         return 0;
     } else{
