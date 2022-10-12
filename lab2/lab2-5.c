@@ -5,6 +5,11 @@
 
 int* create_array(int size, int r1, int r2)
 {
+    if(r1 > r2){
+        int tmp = r1;
+        r1 = r2;
+        r2 = tmp;
+    }
     int *res = (int*)malloc(sizeof(int) * size);
     if(res == NULL){
         return NULL;
