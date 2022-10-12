@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
 
         int max = search_max_idx(arr, size);
         int min = search_min_idx(arr, size);
-        swap(&arr[min], &arr[max]); // arr + min
+        swap(arr + min, arr + max);
         printf("Changed array: ");
         print_arr(arr, size);
 
