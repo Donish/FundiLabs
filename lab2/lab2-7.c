@@ -4,14 +4,6 @@
 #include <string.h>
 #include <math.h>
 
-void print_arr(int *arr, int size)
-{
-    for(int i = 0; i < size; i++){
-        printf("[%d] ", arr[i]);
-    }
-    printf("\n");
-}
-
 double power(double num, int step)
 {
     double res = 1;
@@ -23,21 +15,20 @@ double power(double num, int step)
 
 int isconvex(int count, ...)
 {
-    int res = 0;
     va_list runner;
     va_start(runner, count);
 
-    int *coords = (int*)malloc(sizeof(int) * count);
+    double *coords = (double*)malloc(sizeof(double) * count);
     if(coords == NULL){
         return -1;
     }
-    int difference = 0;
+
     for(int i = 0; i < count; i++){
-        coords[i] = va_arg(runner, int);
+        coords[i] = va_arg(runner, double);
     }
     va_end(runner);
 
-    int *vectors = (int*)malloc(sizeof(int) * count);
+    double *vectors = (double*)malloc(sizeof(double) * count);
     if(vectors == NULL){
         free(coords);
         return -1;
@@ -48,7 +39,7 @@ int isconvex(int count, ...)
     vectors[0] = coords[0] - coords[count - 2];
     vectors[1] = coords[1] - coords[count - 1];
     free(coords);
-    int product;
+    double product;
     for(int i = 0; i < count; i += 2){
         product = vectors[i] * vectors[(i + 3) % count] - vectors[(i + 1) % count] * vectors[(i + 2) % count];
         if(product < 0){
@@ -60,21 +51,21 @@ int isconvex(int count, ...)
     return 1; // выпуклый
 }
 
-double polynomial(double x, double y, double n, ...)
+double polynomial(double x, int n, ...)
 {
-    if(n < 0.0){
+    if(n < 0){
         return NAN;
     }
 
     va_list runner;
     va_start(runner, n);
 
-    double pow_y = 1;
     double res = 0;
-    for(int i = 0; i < n + 1; i++){
-        res += va_arg(runner, double) * power(x, n - i) * pow_y;
-        pow_y *= y;
+    for(int i = 0; i < n; i++){
+        res += va_arg(runner, double);
+        res *= x;
     }
+    res += va_arg(runner, double);
     va_end(runner);
 
     return res;
@@ -92,7 +83,7 @@ int main(int argc, char *argv[])
 
     if(strcmp(argv[1], "-a") == 0){
 
-        int flag = isconvex(10, (int)1, (int)5, (int)3, (int)2, (int)6, (int)3, (int)7, (int)4, (int)9, (int)7);
+        int flag = isconvex(10, (double)1.0, (double)5.0, (double)3.0, (double)2.0, (double)6.0, (double)3.0, (double)7.0, (double)4.0, (double)9.0, (double)7.0);
         if(flag == -1){
             printf("Memory wasn't allocated!\n");
         } else if(flag == 1){
@@ -103,7 +94,7 @@ int main(int argc, char *argv[])
 
     } else if(strcmp(argv[1], "-b") == 0){
 
-        double res = polynomial(3, 2, 5, (double)4.3, (double)2.5, (double)7.3, (double)12.1, (double)10.7, (double)8);
+        double res = polynomial(3, 5, (double)4.3, (double)2.5, (double)7.3, (double)12.1, (double)10.7, (double)8);
         if(isnan(res)){
             printf("Only positive degree!\n");
             return 0;
