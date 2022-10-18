@@ -4,15 +4,6 @@
 #include <string.h>
 #include <math.h>
 
-double power(double num, int step)
-{
-    double res = 1;
-    for(int i = 0; i < step; i++){
-        res *= num;
-    }
-    return res;
-}
-
 int isconvex(int count, ...)
 {
     va_list runner;
