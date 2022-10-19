@@ -161,7 +161,6 @@ char* mysum(int* flag, int count, int base, ...)
         return NULL;
     }
 
-    //int size = strlen(res);
     for(int i = 0; i < count - 1; i++){
 
         adding = nozero(va_arg(runner, char*));
