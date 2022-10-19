@@ -117,7 +117,7 @@ void copy_file(FILE* f1, FILE* f2)
 
 int main(int argc, char* argv[])
 {
-    // объявление всего нужного(псевдоглобального)
+    // объявление всего нужного
     FILE *fin, *fout;
     if(argc == 1){
         printf("No arguments!\n");
