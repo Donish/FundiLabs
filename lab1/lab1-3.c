@@ -294,6 +294,6 @@ int main(int argc, char* argv[])
 
     } else{
         printf("Wrong flag!\n");
-        return ;
+        return 0;
     }
 }
