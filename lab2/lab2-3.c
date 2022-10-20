@@ -25,9 +25,17 @@ double factorial(double n)
     return res;
 }
 
-double combination(double m, double k)
+double combination(int m, int k)
 {
-    return factorial(m) / (factorial(k) * factorial(m - k));
+    double res;
+    double numerator = 1.0;
+    for(double i = k + 1.0; i <= m; i++){
+        numerator *= i;
+    }
+    double denominator = factorial(m - k);
+    res = numerator / denominator;
+    return res;
+    //return factorial(m) / (factorial(k) * factorial(m - k));
 }
 
 int isprime(int num)
@@ -66,8 +74,9 @@ double dichotomy(double F(double),double a, double b, double eps)
 //e
 double e_lim(double eps)
 {
-    double res = 0;
-    double prev = 0;
+    double res = 1.0;
+    double prev = 0.0;
+    //double power = 1.0;
     for(double n = 1;; n++){
         prev = res;
         res = pow(1.0 + (1.0 / n), n);
@@ -78,16 +87,18 @@ double e_lim(double eps)
     return res;
 }
 
-double e_row(double eps)
+double e_row(double eps)//done
 {
     double res = 0;
-    double prev = 0;
-    for(double n = 0;; n++){
-        prev = res;
-        res += 1.0 / factorial(n);
+    double prev = 0.0;
+    double fact = 1.0;
+    for(double n = 1;; n++){
+        res += 1.0 / fact;
+        fact *= n;
         if(fabs(res - prev) < eps){
             break;
         }
+        prev = res;
     }
     return res;
 }
@@ -98,13 +109,13 @@ double e_eq(double x)
 }
 
 //pi
-double pi_lim(double eps)
+double pi_lim(double eps)//done
 {
     double res = 4.0;
     double prev = 0;
     for(double n = 1;; n++){
         prev = res;
-        res *= (4 * n * (n + 1) / pow(2 * n + 1, 2));
+        res *= (4 * n * (n + 1)) / ((4 * n * (n + 1)) + 1);
         if(fabs(res - prev) < eps){
             break;
         }
@@ -112,13 +123,17 @@ double pi_lim(double eps)
     return res;
 }
 
-double pi_row(double eps)
+double pi_row(double eps) //done
 {
     double res = 0;
     double prev = 0;
-    for(double n = 1;; n++){
+    for(int n = 1;; n++){
         prev = res;
-        res += pow(-1, n - 1) / (2 * n - 1);
+        if((n - 1) % 2 == 0){
+            res += 1.0 / (2.0 * n - 1.0);
+        } else{
+            res += -1.0 / (2.0 * n - 1.0);
+        }
         if(fabs(res - prev) < eps){
             break;
         }
@@ -146,13 +161,17 @@ double ln2_lim(double eps)
     return res;
 }
 
-double ln2_row(double eps)
+double ln2_row(double eps)//done
 {
     double res = 0;
     double prev = 0;
-    for(double n = 1;; n++){
+    for(int n = 1;; n++){
         prev = res;
-        res += pow(-1, n - 1) / n;
+        if((n - 1) % 2 == 0){
+            res += 1.0 / n;
+        } else{
+            res += -1.0 / n;
+        }
         if(fabs(res - prev) < eps){
             break;
         }
@@ -166,12 +185,12 @@ double ln2_eq(double x)
 }
 
 //sqrt2
-double sqrt2_lim(double eps)
+double sqrt2_lim(double eps)//done
 {
     double res = 0;
     double prev = -0.5;
     for(int n = 1;; n++){
-        res = prev - pow(prev, 2) / 2 + 1;
+        res = prev - (prev * prev) / 2.0 + 1;
         if(fabs(res - prev) < eps){
             break;
         }
@@ -180,13 +199,15 @@ double sqrt2_lim(double eps)
     return res;
 }
 
-double sqrt2_row(double eps)
+double sqrt2_row(double eps)//done
 {
     double res = 1.0;
     double prev = 1.0;
+    double power = 1.0 / 4.0;
     for(int k = 2;; k++){
         prev = res;
-        res *= pow(2, pow(2, -k));
+        res *= pow(2, power);
+        power *= (1.0 / 2.0);
         if(fabs(res - prev) < eps){
             break;
         }
@@ -200,16 +221,23 @@ double sqrt2_eq(double x)
 }
 
 //gamma
-double gamma_lim(double eps)
+double gamma_lim(double eps)//done
 {
     double res = 0.0;
     double prev = 0.0;
-    for(double m = 2;; m++){
+    double fact = 1.0;
+    for(int m = 2;; m++){
         prev = res;
         res = 0.0;
-        for(double k = 1; k <= m; k++){
-            res += combination(m, k) * (pow(-1, k) / k) * log(factorial(k));
+        for(int k = 1; k <= m; k++){
+            fact *= k;
+            if(k % 2 == 0){
+                res += combination(m, k) * log(fact) / k;
+            } else{
+                res += combination(m, k) * (-1) * log(fact) / k;
+            }
         }
+        fact = 1.0;
         if(fabs(res - prev) < eps){
             break;
         }
