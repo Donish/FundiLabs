@@ -64,11 +64,11 @@ int bitdivide(int a, int b)
     return a >> b;
 }
 
-//побитовый остаток от деления
-int bitmod(int a, int b, int r)
+//побитовый остаток от деления на степень двойки
+int bitmod(int a, int b)
 {
-    int c = bitdivide(a, r);
-    return bitminus(a, bitmultiply(c, b));
+    b = bitminus(b, 1);
+    return a & b;
 }
 
 //функция для перевода из 10-ной СС в другую
@@ -109,7 +109,7 @@ char* convert_from_ten(int number, int r, int *flag)
         }
         ost_arr = tmpint;
 
-        ostatok = bitmod(number, base, r);
+        ostatok = bitmod(number, base);
         number = bitdivide(number, r);
         if(*flag == 2){
             free(ost_arr);
@@ -145,6 +145,7 @@ char* convert_from_ten(int number, int r, int *flag)
             res[j] = bitplus('A', (bitminus(ost_arr[i], 10)));
         }
     }
+    // j = bitplus(j, 1);
     
     tmpc = (char*)realloc(res, bitmultiply(sizeof(char), bitplus(j, 1)));
     if(tmpc == NULL){
@@ -164,9 +165,15 @@ int main()
     char* res;
 
     printf("Enter the number:\n");
-    scanf("%d", &num);
+    if(!scanf("%d", &num)){
+        printf("Enter only integer number!\n");
+        return 0;
+    }
     printf("Enter the degree:\n");
-    scanf("%d", &r);
+    if(!scanf("%d", &r)){
+        printf("Enter only integer number!\n");
+        return 0;
+    }
 
     res = convert_from_ten(num, r, &flag);
     if(flag == 1){
