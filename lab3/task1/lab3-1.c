@@ -80,7 +80,7 @@ char* convert_from_ten(int number, int r, int *flag)
     }
     int base = bitpow(r);
     char *res, *tmpc;
-    int *ost_arr, *tmpint;
+    int *ost_arr = NULL, *tmpint = NULL;
     int size = 0;
     int ostatok;
     int sign = 1;
@@ -97,7 +97,7 @@ char* convert_from_ten(int number, int r, int *flag)
     }
 
     if(number < 0){
-        number = bitmultiply(number, -1);
+        number = bitmultiply(number, negative(1));
         sign = 0; //0 - число отриц
     }
     //заполнение массива остатков
@@ -105,6 +105,8 @@ char* convert_from_ten(int number, int r, int *flag)
         tmpint = (int*)realloc(ost_arr, bitmultiply(sizeof(int), bitplus(size, 1)));
         if(tmpint == NULL){
             *flag = 2;
+            if(size != 0)
+                free(ost_arr);
             return NULL;
         }
         ost_arr = tmpint;
@@ -145,8 +147,8 @@ char* convert_from_ten(int number, int r, int *flag)
             res[j] = bitplus('A', (bitminus(ost_arr[i], 10)));
         }
     }
-    // j = bitplus(j, 1);
-    
+
+
     tmpc = (char*)realloc(res, bitmultiply(sizeof(char), bitplus(j, 1)));
     if(tmpc == NULL){
         *flag = 2;
@@ -155,6 +157,7 @@ char* convert_from_ten(int number, int r, int *flag)
     }
     res = tmpc;
     res[j] = '\0';
+    free(ost_arr);
     return res;
 }
 
