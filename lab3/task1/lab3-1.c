@@ -79,7 +79,7 @@ char* convert_from_ten(int number, int r, int *flag)
         return NULL;
     }
     int base = bitpow(r);
-    char *res, *tmpc;
+    char *res = NULL, *tmpc;
     int *ost_arr = NULL, *tmpint = NULL;
     int size = 0;
     int ostatok;
@@ -138,6 +138,8 @@ char* convert_from_ten(int number, int r, int *flag)
         if(tmpc == NULL){
             *flag = 2;
             free(ost_arr);
+            if(j != 0)
+                free(res);
             return NULL;
         }
         res = tmpc;
@@ -153,6 +155,7 @@ char* convert_from_ten(int number, int r, int *flag)
     if(tmpc == NULL){
         *flag = 2;
         free(ost_arr);
+        free(res);
         return NULL;
     }
     res = tmpc;
