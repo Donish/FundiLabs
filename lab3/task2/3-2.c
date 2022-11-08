@@ -9,21 +9,21 @@ enum ERROR {
     MEMORY = 3
 };
 
-double combination(double m, double k)
+double combination(double m, double k, double eps)
 {
     double res = 1.0;
-    if(fabs(k) < 0.000000001 || fabs(k - m) < 0.000000001){
+    if(fabs(k) < eps || fabs(k - m) < eps){
         return 1.0;
-    } else if(fabs(k - 1.0) < 0.000000001 || fabs((k + 1) - m) < 0.000000001){
+    } else if(fabs(k - 1.0) < eps || fabs((k + 1) - m) < eps){
         return m;
     }
-    for(; k > 0.000000001; m--, k--){
+    for(; k > eps; m--, k--){
         res *= m / k;
     }
     return res;
 }
 
-void func1(int **arr, int *size, int k, int l, int *flag)
+void func1(int **arr, int *size, int k, int l, int *flag, double eps)
 {
     if(l <= 0 || k <= 0){
         *flag = ONLY_POSITIVE;
@@ -75,7 +75,7 @@ void func1(int **arr, int *size, int k, int l, int *flag)
 
         num = (1 << l) - 1;
         int num_border = (1 << k) - 2;
-        *size = combination(k, l);
+        *size = combination(k, l, eps);
         *arr = (int*)malloc(sizeof(int) * *size);
         if(*arr == NULL){
             *flag = MEMORY;
@@ -212,7 +212,8 @@ int main()
         return 0;
     }
 
-    func1(&res1, &size1, k, l, &flag);
+    double eps = 0.000000001;
+    func1(&res1, &size1, k, l, &flag, eps);
     if(flag == ONLY_POSITIVE){
         printf("Enter only positive numbers!\n");
         return 0;
