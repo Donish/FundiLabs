@@ -4,6 +4,11 @@
 #include <math.h>
 #include <ctype.h>
 
+enum ERROR{
+    CORRECT = 0,
+    NO_MEMORY = -1
+};
+
 //проверка на соотвествие числа основанию
 int check_base_num(char* number, int base)
 {
@@ -110,28 +115,75 @@ long long int convert_digits_to_ten(char* number, int base)
     return res * sign;
 }
 
-void convert_from_ten(long long int number, int base)
+//функция для перевода из 10 СС в другую
+char *convert_from_ten(long long int number, int base, int *flag)//в процессе
 {
-    char res[100];
-    int ost_arr[100];
-    int size = 0;
-    int ostatok;
-    int sign = 1;
+    // char res[100];
+    char *res = NULL;
+    // int ost_arr[100];
+    int *ost_arr = NULL, *tmpost_arr = NULL;
+    int size = 0, ostatok, sign = 1, count = 2;
+    ost_arr = (int*)malloc(sizeof(int) * count);
+    if(!ost_arr){
+        *flag = NO_MEMORY;
+        return NULL;
+    }
+
+    if(number == 0){
+        res = (char*)malloc(sizeof(char) * 2);
+        if(!res){
+            *flag = NO_MEMORY;
+            free(ost_arr);
+            return NULL;
+        }
+        res[0] = '0';
+        res[1] = '\0';
+        return res;
+    }
     if(number < 0){
         number *= -1;
         sign = -1;
     }
     while(number != 0){
+
+        if(size >= count){
+
+            count *= 2;
+            tmpost_arr = (int*)realloc(ost_arr, sizeof(int) * count);
+            if(!tmpost_arr){
+                *flag = NO_MEMORY;
+                free(ost_arr);
+                return NULL;
+            }
+            ost_arr = tmpost_arr;
+
+        }
+
         ostatok = number % base;
         number /= base;
         ost_arr[size] = ostatok;
         size++;
+
     }
-    res[size] = '\0';
-    if(number == 0){
-        res[0] = '0';
-        res[1] = '\0';
+
+    if(sign == 1){
+        res = (char*)malloc(sizeof(char) * (size + 1));
+        if(!res){
+            *flag = NO_MEMORY;
+            free(ost_arr);
+            return NULL;
+        }
+        res[size] = '\0';
+    } else if(sign == -1){
+        res = (char*)malloc(sizeof(char) * (size + 2));
+        if(!res){
+            *flag = NO_MEMORY;
+            free(ost_arr);
+            return NULL;
+        }
+        res[size + 1] = '\0';
     }
+    
     for(int i = size - 1, j = 0; i != -1; i--, j++){
         if(sign == -1 && j == 0){
             res[j] = '-';
@@ -144,7 +196,9 @@ void convert_from_ten(long long int number, int base)
             res[j] = 'A' + (ost_arr[i] - 10);
         }
     }
-    printf("%d: %s\n", base, res);
+    free(ost_arr);
+    // printf("%d: %s\n", base, res);
+    return res;
 }
 
 int main()
@@ -157,9 +211,10 @@ int main()
         return 0;
     }
 
-    char num_str[20];
+    char num_str[BUFSIZ];
     long long int num = 0;
     long long int max_num = 0;
+    int flag = CORRECT;
     while(1){
         scanf("%s", num_str);
         if(strcmp(num_str, "Stop") == 0 || strcmp(num_str, "stop") == 0){
@@ -186,9 +241,38 @@ int main()
         }
     }
 
-    convert_from_ten(max_num, 9);
-    convert_from_ten(max_num, 18);
-    convert_from_ten(max_num, 27);
-    convert_from_ten(max_num, 36);
+    char *res = NULL;
+    res = convert_from_ten(max_num, 9, &flag); 
+    if(flag == NO_MEMORY){
+        printf("Memory wasn't allocated!\n");
+        return 0;
+    }
+    printf("9: %s\n", res);
+    free(res);
+
+    res = convert_from_ten(max_num, 18, &flag);
+    if(flag == NO_MEMORY){
+        printf("Memory wasn't allocated!\n");
+        return 0;
+    }
+    printf("18: %s\n", res);
+    free(res);
+
+    res = convert_from_ten(max_num, 27, &flag);
+    if(flag == NO_MEMORY){
+        printf("Memory wasn't allocated!\n");
+        return 0;
+    }
+    printf("27: %s\n", res);
+    free(res);
+
+    res = convert_from_ten(max_num, 36, &flag);
+    if(flag == NO_MEMORY){
+        printf("Memory wasn't allocated!\n");
+        return 0;
+    }
+    printf("36: %s\n", res);
+    free(res);
+
     return 0;
 }
