@@ -1,0 +1,15 @@
+Input number:wiuef, Base:33, Converted number:38629485
+Input number:23f2, Base:16, Converted number:9202
+Input number:wfwfn, Base:33, Converted number:38523893
+Input number:2092, Base:10, Converted number:2092
+Input number:wg2t, Base:33, Converted number:1167503
+Input number:2, Base:3, Converted number:2
+Input number:2f2z, Base:36, Converted number:112859
+Input number:dqfz, Base:36, Converted number:640799
+Input number:zzzzzzzzz, Base:36, Converted number:101559956668415
+Input number:0erg, Base:28, Converted number:11748
+Input number:00, Base:any, Converted number:0
+Input number:-aef, Base:16, Converted number:-2799
+Input number:-00000, Base:1, Converted number:0
+Input number:-er, Base:28, Converted number:-419
+Input number:101, Base:2, Converted number:5
