@@ -118,9 +118,7 @@ long long int convert_digits_to_ten(char* number, int base)
 //функция для перевода из 10 СС в другую
 char *convert_from_ten(long long int number, int base, int *flag)//в процессе
 {
-    // char res[100];
     char *res = NULL;
-    // int ost_arr[100];
     int *ost_arr = NULL, *tmpost_arr = NULL;
     int size = 0, ostatok, sign = 1, count = 2;
     ost_arr = (int*)malloc(sizeof(int) * count);
@@ -197,7 +195,6 @@ char *convert_from_ten(long long int number, int base, int *flag)//в проце
         }
     }
     free(ost_arr);
-    // printf("%d: %s\n", base, res);
     return res;
 }
 
