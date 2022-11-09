@@ -153,7 +153,7 @@ int main(int argc, char* argv[])
 
     long long int converted = 0;
     int base = 0;
-    char num[100];
+    char num[BUFSIZ];
     while(fscanf(fin, "%s", num) != EOF){
 
         if(other_syms(num)){
