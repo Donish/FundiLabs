@@ -159,13 +159,12 @@ void input_struct_fill(message *res, char *stop_word, int *flag, char *filename)
         printf("Enter the message:\n");
 
         scanmsg(res, flag);
+
         if(*flag == NO_MEMORY){
-            free(filename);
             fclose(fout);
             return;
         }
         if(!strcmp(res->text, stop_word)){
-            free(res->text);
             fclose(fout);
             return;
         }
@@ -173,7 +172,6 @@ void input_struct_fill(message *res, char *stop_word, int *flag, char *filename)
             count_errors++;
             free(res->text);
             if(count_errors == 3){
-                free(filename);
                 *flag = WRONG_MESSAGE;
                 fclose(fout);
                 return;
@@ -185,6 +183,7 @@ void input_struct_fill(message *res, char *stop_word, int *flag, char *filename)
         filefill(res, fout);
         free(res->text);
     }
+    fclose(fout);
 }
 
 //удаление кавычек при чтении из файла
@@ -211,7 +210,6 @@ message *res_struct_fill(char *filename, int *flag, int *res_size)
     FILE *fin;
     fin = fopen(filename, "r");
     if(!fin){
-        free(filename);
         *flag = NO_FILE;
         return NULL;
     }
@@ -226,7 +224,6 @@ message *res_struct_fill(char *filename, int *flag, int *res_size)
 
     res = (message*)realloc(res, count * sizeof(message));
     if(!res){
-        free(filename);
         *flag = NO_MEMORY;
         fclose(fin);
         return NULL;
@@ -238,7 +235,6 @@ message *res_struct_fill(char *filename, int *flag, int *res_size)
             tmp = (message*)realloc(res, sizeof(message) * count);
             if(!tmp){
                 *flag = NO_MEMORY;
-                free(filename);
                 for(int i = 0; i < *res_size; i++){
                     free(res[i].text);
                 }
@@ -248,7 +244,6 @@ message *res_struct_fill(char *filename, int *flag, int *res_size)
             res = tmp;
         }
 
-        //когда сообщение начинается с цифры и заканчивается цифрой, то все плохо :(
         if(c == ';' || c == '\n'){
             msg_objects++;
             if(msg_objects % 3 == 1){
@@ -262,7 +257,6 @@ message *res_struct_fill(char *filename, int *flag, int *res_size)
                 res[*res_size].text = (char*)malloc(sizeof(char) * (buff_len + 1));
                 if(!(res[*res_size].text)){
                     *flag = NO_MEMORY;
-                    free(filename);
                     for(int i = 0; i < *res_size; i++){
                         free(res[i].text);
                     }
@@ -279,7 +273,6 @@ message *res_struct_fill(char *filename, int *flag, int *res_size)
                 if(res[*res_size].text[0] == '"' && res[*res_size].text[res[*res_size].len + 1] == '"'){
                     delete_quotes(&(res[*res_size].text), res[*res_size].len, flag);
                     if(*flag == NO_MEMORY){
-                        free(filename);
                         for(int i = 0; i < *res_size; i++){
                             free(res[i].text);
                         }        
@@ -339,20 +332,25 @@ int main(int argc, char *argv[])
 
     input_struct_fill(&msg, argv[1], &flag, filename);
     if(flag == NO_MEMORY){
+        free(filename);
         printf("Memory wasn't allocated!\n");
         return 0;
     } else if(flag == WRONG_MESSAGE){
+        free(filename);
         printf("You have entered wrong message 3 times in a row!\n");
         return 0;
     }
+    free(msg.text);
 
     message *res;
     int res_size = 0;
     res = res_struct_fill(filename, &flag, &res_size);
     if(flag == NO_FILE){
+        free(filename);
         printf("Couldn't open the file!\n");
         return 0;
     } else if(flag == NO_MEMORY){
+        free(filename);
         printf("Memory wasn't allocated!\n");
         return 0;
     }
