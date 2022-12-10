@@ -23,6 +23,9 @@ double **generate_matrix(int row, int column, int *flag)
         matrix[i] = (double*)malloc(sizeof(double) * column);
         if(matrix[i] == NULL){
             *flag = NO_MEMORY;
+            for(int j = 0; j < i; j++){
+                free(matrix[j]);
+            }
             free(matrix);
             return NULL;
         }
@@ -51,6 +54,9 @@ double **product_of_matrix(double **matrix1, double **matrix2, int row1, int col
         res_matrix[i] = (double*)malloc(sizeof(double) * col2);
         if(res_matrix[i] == NULL){
             *flag = NO_MEMORY;
+            for(int j = 0; j < i; j++){
+                free(res_matrix[j]);
+            }
             free(res_matrix);
             return NULL;
         }
@@ -82,11 +88,11 @@ void row_difference(double *row_num, double *row, double coef, int size) {
 	}
 }
 
-void change_rows(double **matrix, int row_num, int size)
+void change_rows(double **matrix, int row_num, int size, double eps)
 {
     int changing_row = 0;
     for(int j = 0; j < size; j++){
-        if(matrix[j][row_num] != 0){
+        if(fabs(matrix[j][row_num]) > eps){
             if(matrix[row_num][j] == 0){
                 continue;
             }
@@ -99,13 +105,13 @@ void change_rows(double **matrix, int row_num, int size)
     matrix[changing_row] = tmp;
 }
 
-int det_eq_zero(double **matrix, int size)
+int det_eq_zero(double **matrix, int size, double eps)
 {
     int flag_zero = 1;
     for(int i = 0; i < size; i++){
         flag_zero = 1;
         for(int j = 0; j < size; j++){
-            if(matrix[i][j] != 0){
+            if(fabs(matrix[i][j]) > eps){
                 flag_zero = 0;
                 break;
             }
@@ -117,7 +123,7 @@ int det_eq_zero(double **matrix, int size)
     for(int i = 0; i < size; i++){
         flag_zero = 1;
         for(int j = 0; j < size; j++){
-            if(matrix[j][i] != 0){
+            if(fabs(matrix[j][i]) > eps){
                 flag_zero = 0;
                 break;
             }
@@ -138,13 +144,13 @@ double determinant(double **matrix, int row, int col, double eps, int *flag)
 
     double res = 1;
 
-    if(det_eq_zero(matrix, row)){
+    if(det_eq_zero(matrix, row, eps)){
         return 0;
     }
 
     for(int i = 0; i < row; i++){
-        if(matrix[i][i] == 0){
-            change_rows(matrix, i, row);
+        if(fabs(matrix[i][i]) < eps){
+            change_rows(matrix, i, row, eps);
             res *= -1;
         }
     }
@@ -162,7 +168,7 @@ double determinant(double **matrix, int row, int col, double eps, int *flag)
 
     return res;
 }
-
+// поправить сравнение с нулем
 void foofree(double **matrix, int row)
 {
     for(int i = 0; i < row; i++){
