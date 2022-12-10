@@ -76,7 +76,7 @@ void func1(int **arr, int *size, int k, int l, int *flag, double eps)
         num = (1 << l) - 1;
         int num_border = (1 << k) - 2;
         *size = combination(k, l, eps);
-        *arr = (int*)malloc(sizeof(int) * *size);
+        *arr = (int*)malloc(sizeof(int) * (*size + 1));
         if(*arr == NULL){
             *flag = MEMORY;
             return;
@@ -87,7 +87,7 @@ void func1(int **arr, int *size, int k, int l, int *flag, double eps)
         for(int i = num + 1; i < num_border; i++){
             num_cp = i;
             while(num_cp != 0){
-                if((num_cp & 1) == 1)
+                if(num_cp & 1)
                     count_1++;
 
                 num_cp >>= 1;
@@ -216,13 +216,13 @@ int main()
     func1(&res1, &size1, k, l, &flag, eps);
     if(flag == ONLY_POSITIVE){
         printf("Enter only positive numbers!\n");
-        return 0;
+        return ONLY_POSITIVE;
     } else if(flag == L_MORE){
         printf("The number of units can't be greater than the number of bits!\n");
-        return 0;
+        return L_MORE;
     } else if(flag == MEMORY){
         printf("Memory wasn't allocated!\n");
-        return 0;
+        return MEMORY;
     } else{
         printf("There are %d %d-bit numbers with %d units in binary notation:\n", size1, k, l);
         printarr(res1, size1);
@@ -233,16 +233,17 @@ int main()
     func2(&res2, &size2, k, l, &flag);
     if(flag == ONLY_POSITIVE){
         printf("Enter only positive numbers!\n");
-        return 0;
+        return ONLY_POSITIVE;
     } else if(flag == L_MORE){
         printf("The number of units can't be greater than the number of bits!\n");
-        return 0;
+        return L_MORE;
     } else if(flag == MEMORY){
         printf("Memory wasn't allocated!\n");
-        return 0;
+        return MEMORY;
     } else{
         printf("There are %d %d-bit numbers with %d consecutive units in binary notation:\n", size2, k, l);
         printarr(res2, size2);
+        printf("\n");
         free(res2);
     }
 
