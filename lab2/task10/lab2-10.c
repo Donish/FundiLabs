@@ -22,7 +22,7 @@ typedef struct{
 } fraction;
 
 typedef struct{
-    int *status; //1 - memory trouble
+    int *status;
     double *decimal; //десятичные дроби
 } frac_repres;
 
@@ -103,9 +103,7 @@ int representation_available(frac_repres *res, double eps, int base, int count, 
     fraction frac;
     for(int i = 0; i < count; i++){
         make_simple_frac(&frac, res->decimal[i], eps);
-        printf("%d/%d\n", frac.numerator, frac.denominator);
         frac_reduction(&frac, base);
-        printf("%d/%d\n", frac.numerator, frac.denominator);
 
         res->status[i] = VALID;
         
