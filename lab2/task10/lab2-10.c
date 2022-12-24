@@ -136,8 +136,8 @@ int main()
     int flag = CORRECT;
     frac_repres res;
     double eps = 0.0000001;
-    int base = 8, count = 2;
-    flag = representation_available(&res, eps, base, count, (double)0.5, (double)0.125);
+    int base = 2, count = 2;
+    flag = representation_available(&res, eps, base, count, (double)0.15625, (double)0.125);
     if(flag == WRONG_BASE){
         printf("Enter the base between 2 and 36 except 10!\n");
         return WRONG_BASE;
@@ -150,6 +150,8 @@ int main()
     }
 
     print_arrays(res, count, base);
+    free(res.status);
+    free(res.decimal);
 
     return 0;
 }
