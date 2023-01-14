@@ -813,7 +813,7 @@ void print_grouped_studs(student **res, int *sizes)
 void make_filename(char *res, int filenum, char *filename)
 {
     strcat(res, filename);
-    char *txt = ".txt\0";
+    char *txt = ".txt";
     int i = 0;
     while(res[i] != '.'){
         i++;
