@@ -1,0 +1,2 @@
+[information][19/3/2023 12:44:19] must be in file 1
+[critical][19/3/2023 12:44:19] must be in file 1 and 2

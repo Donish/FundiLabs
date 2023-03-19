@@ -1,0 +1,2 @@
+[error][19/3/2023 12:44:19] must be in file 2 and 3
+[trace][19/3/2023 12:44:19] must be in file 3
