@@ -1,4 +1,4 @@
-CC = g++
+CC = g+
 TARGET = logger
 
 PREF_SRC = ./src/
